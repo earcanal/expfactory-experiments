@@ -99,10 +99,11 @@ var exp_stage = 'practice'
 var test_stimuli = []
 var choices = [37, 39]
 var path = '/static/experiments/attention_network_task_interactions/images/'
-var sounds = '/static/experiments/attention_network_task_interactions/sounds/'
 var images = [path + 'right_arrow.png', path + 'left_arrow.png', path + 'no_arrow.png']
+var sounds = ['/static/experiments/attention_network_task_interactions/sounds/2khz_50ms.mp3']
 //preload
 jsPsych.pluginAPI.preloadImages(images)
+jsPsych.pluginAPI.preloadAudioFiles(sounds)
 
 for (l = 0; l < locations.length; l++) {
 	var loc = locations[l]
@@ -181,7 +182,7 @@ for (l = 0; l < locations.length; l++) {
 	}
 }
 
-/* set up 24 practice trials. Included all nocue up trials, center cue up trials, double cue down trials, and 6 spatial trials (3 up, 3 down) */
+/* set up 24 practice trials. Include all nocue up trials, center cue up trials, double cue down trials, and 6 spatial trials (3 up, 3 down) */
 var practice_block = jsPsych.randomization.repeat(test_stimuli.slice(0, 12).concat(test_stimuli.slice(
 	18, 21)).concat(test_stimuli.slice(36, 45)), 1, true);
 
@@ -382,11 +383,29 @@ var double_cue = {
 	}
 }
 
-/* set up ANT experiment */
+// test block
+var myfunc = function() {
+	console.log('myfunc');
+    return 'you called?';
+}
+var myblock = {
+	//type: 'poldrack-single-stim',
+	type: 'call-function',
+	func: myfunc
+/*
+	on_finish: function() {
+		jsPsych.data.addDataToLastTrial({
+			exp_stage: exp_stage
+		})
+	}
+*/
+}
+
+/* set up ANTI experiment */
 var attention_network_task_interactions_experiment = [];
 attention_network_task_interactions_experiment.push(instruction_node);
 
-/* set up ANT practice */
+/* set up ANTI practice */
 var trial_num = 0
 var block = practice_block
 for (i = 0; i < block.data.length; i++) {
@@ -397,9 +416,7 @@ for (i = 0; i < block.data.length; i++) {
 		stimulus: '<div class = centerbox><div class = ANT_text>+</div></div>',
 		is_html: true,
 		choices: 'none',
-		sound: '/static/experiments/attention_network_task_interactions/sounds/2khz_50ms.mp3',
 		data: {
-
 			trial_id: 'fixation',
 			exp_stage: 'practice'
 		},
@@ -407,7 +424,8 @@ for (i = 0; i < block.data.length; i++) {
 		timing_stim: first_fixation_gap,
 		timing_response: first_fixation_gap
 	}
-	attention_network_task_interactions_experiment.push(first_fixation)
+	attention_network_task_interactions_experiment.push(first_fixation);
+	attention_network_task_interactions_experiment.push(myblock);
 
 	if (block.data[i].cue == 'nocue') {
 		attention_network_task_interactions_experiment.push(no_cue)
@@ -478,12 +496,13 @@ for (i = 0; i < block.data.length; i++) {
 	}
 	attention_network_task_interactions_experiment.push(last_fixation)
 }
+	setTimeout(function(){debugger;}, 3000);
 
-attention_network_task_interactions_experiment.push(rest_block)
+attention_network_task_interactions_experiment.push(rest_block);
 attention_network_task_interactions_experiment.push(test_intro_block);
 
 
-/* Set up ANT main task */
+/* Set up ANTI main task */
 var trial_num = 0
 for (b = 0; b < blocks.length; b++) {
 	var block = blocks[b]
@@ -496,7 +515,6 @@ for (b = 0; b < blocks.length; b++) {
 			is_html: true,
 			choices: 'none',
 			data: {
-
 				trial_id: "fixation",
 				exp_stage: 'test'
 			},
@@ -505,6 +523,7 @@ for (b = 0; b < blocks.length; b++) {
 			timing_response: first_fixation_gap
 		}
 		attention_network_task_interactions_experiment.push(first_fixation)
+
 
 		if (block.data[i].cue == 'nocue') {
 			attention_network_task_interactions_experiment.push(no_cue)

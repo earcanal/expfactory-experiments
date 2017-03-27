@@ -180,7 +180,7 @@ for (l = 0; l < locations.length; l++) {
 	}
 }
 
-/* set up 24 practice trials. Included all nocue up trials, center cue up trials, double cue down trials, and 6 spatial trials (3 up, 3 down) */
+/* set up 24 practice trials. Include all nocue up trials, center cue up trials, double cue down trials, and 6 spatial trials (3 up, 3 down) */
 var practice_block = jsPsych.randomization.repeat(test_stimuli.slice(0, 12).concat(test_stimuli.slice(
 	18, 21)).concat(test_stimuli.slice(36, 45)), 1, true);
 
