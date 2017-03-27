@@ -384,16 +384,20 @@ var double_cue = {
 	}
 }
 
-// test block
-var myblock = {
+var audio_context = new AudioContext();
+function play_sound(sound) {
+	console.log('auditory_cue');
+	// play stimulus
+	var source = audio_context.createBufferSource();
+	source.buffer = jsPsych.pluginAPI.getAudioBuffer(sound);
+	source.connect(audio_context.destination);
+	startTime = audio_context.currentTime;
+	source.start(startTime);
+    return true;
+}
+var auditory_cue = {
 	type: 'call-function',
-	data: {
-		trial_id: 'auditory_cue'
-	},
-	func: function() {
-		console.log('myfunc');
-	    return 'you called?';
-	}
+	func: function(){ play_sound(sounds[0]) } 
 }
 
 /* set up ANTI experiment */
@@ -420,7 +424,7 @@ for (i = 0; i < block.data.length; i++) {
 		timing_response: first_fixation_gap
 	}
 	attention_network_task_interactions_experiment.push(first_fixation);
-	attention_network_task_interactions_experiment.push(myblock);
+	attention_network_task_interactions_experiment.push(auditory_cue);
 
 	if (block.data[i].cue == 'nocue') {
 		attention_network_task_interactions_experiment.push(no_cue)
