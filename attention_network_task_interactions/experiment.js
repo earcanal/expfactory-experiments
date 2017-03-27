@@ -70,7 +70,8 @@ var getInstructFeedback = function() {
 
 var post_trial_gap = function() {
 	var curr_trial = jsPsych.progress().current_trial_global
-	return 3500 - jsPsych.data.getData()[curr_trial - 1].block_duration - jsPsych.data.getData()[curr_trial - 4].block_duration
+	// FIXME: hard-coded array indicies are fragile.  This will break (again!) if you introduce additional trials.
+	return 3500 - jsPsych.data.getData()[curr_trial - 1].block_duration - jsPsych.data.getData()[curr_trial - 5].block_duration
 }
 
 var getInstructFeedback = function() {
@@ -385,7 +386,6 @@ var double_cue = {
 
 // test block
 var myblock = {
-	//type: 'poldrack-single-stim',
 	type: 'call-function',
 	data: {
 		trial_id: 'auditory_cue'
@@ -394,13 +394,6 @@ var myblock = {
 		console.log('myfunc');
 	    return 'you called?';
 	}
-/*
-	on_finish: function() {
-		jsPsych.data.addDataToLastTrial({
-			exp_stage: exp_stage
-		})
-	}
-*/
 }
 
 /* set up ANTI experiment */
@@ -443,7 +436,6 @@ for (i = 0; i < block.data.length; i++) {
 			is_html: true,
 			choices: 'none',
 			data: {
-
 				trial_id: 'spatialcue',
 				exp_stage: 'practice'
 			},
@@ -488,7 +480,6 @@ for (i = 0; i < block.data.length; i++) {
 		is_html: true,
 		choices: 'none',
 		data: {
-
 			trial_id: 'fixation',
 			exp_stage: 'practice'
 		},
