@@ -384,14 +384,16 @@ var double_cue = {
 }
 
 // test block
-var myfunc = function() {
-	console.log('myfunc');
-    return 'you called?';
-}
 var myblock = {
 	//type: 'poldrack-single-stim',
 	type: 'call-function',
-	func: myfunc
+	data: {
+		trial_id: 'auditory_cue'
+	},
+	func: function() {
+		console.log('myfunc');
+	    return 'you called?';
+	}
 /*
 	on_finish: function() {
 		jsPsych.data.addDataToLastTrial({
