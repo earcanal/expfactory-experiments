@@ -92,8 +92,9 @@ var instructTimeThresh = 0 ///in seconds
 var credit_var = true
 
 // task specific variables
-/* set up stim: location (2) * cue (4) * direction (2) * condition (3) */
+/* set up stim: tone (2) * location (2) * cue (4) * direction (2) * condition (3) */
 var locations = ['up', 'down']
+var tones = ['notone', 'tone']
 var cues = ['nocue', 'center', 'double', 'spatial']
 var current_trial = 0
 var exp_stage = 'practice'
@@ -106,83 +107,91 @@ var sounds = ['/static/experiments/attention_network_task_interactions/sounds/2k
 jsPsych.pluginAPI.preloadImages(images)
 jsPsych.pluginAPI.preloadAudioFiles(sounds)
 
-for (l = 0; l < locations.length; l++) {
-	var loc = locations[l]
-	for (ci = 0; ci < cues.length; ci++) {
-		var c = cues[ci]
-		stims = [{
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img></div></div>',
-			data: {
-				correct_response: 37,
-				flanker_middle_direction: 'left',
-				flanker_type: 'neutral',
-				flanker_location: loc,
-				cue: c, 
-				trial_id: 'stim'
+for (t = 0; t < tones.length; t++) {
+	var tone = tones[t]
+	for (l = 0; l < locations.length; l++) {
+		var loc = locations[l]
+		for (ci = 0; ci < cues.length; ci++) {
+			var c = cues[ci]
+			stims = [{
+				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
+					'><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img></div></div>',
+				data: {
+					correct_response: 37,
+					flanker_middle_direction: 'left',
+					flanker_type: 'neutral',
+					flanker_location: loc,
+					cue: c,
+					tone: tone,
+					trial_id: 'stim'
+				}
+			}, {
+				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
+					'><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img></div></div>',
+				data: {
+					correct_response: 37,
+					flanker_middle_direction: 'left',
+					flanker_type: 'congruent',
+					flanker_location: loc,
+					cue: c,
+					tone: tone,
+					trial_id: 'stim'
+				}
+			}, {
+				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
+					'><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img></div></div>',
+				data: {
+					correct_response: 37,
+					flanker_middle_direction: 'left',
+					flanker_type: 'incongruent',
+					flanker_location: loc,
+					cue: c,
+					tone: tone, 
+					trial_id: 'stim'
+				}
+			}, {
+				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
+					'><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img></div></div>',
+				data: {
+					correct_response: 39,
+					flanker_middle_direction: 'right',
+					flanker_type: 'neutral',
+					flanker_location: loc,
+					cue: c,
+					tone: tone,
+					trial_id: 'stim'
+				}
+			}, {
+				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
+					'><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img></div></div>',
+				data: {
+					correct_response: 39,
+					flanker_middle_direction: 'right',
+					flanker_type: 'congruent',
+					flanker_location: loc,
+					cue: c,
+					tone: tone,
+					trial_id: 'stim'
+				}
+			}, {
+				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
+					'><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img></div></div>',
+				data: {
+					correct_response: 39,
+					flanker_middle_direction: 'right',
+					flanker_type: 'incongruent',
+					flanker_location: loc,
+					cue: c,
+					tone: tone,
+					trial_id: 'stim'
+				}
+			}]
+			for (i = 0; i < stims.length; i++) {
+				test_stimuli.push(stims[i])
 			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img></div></div>',
-			data: {
-				correct_response: 37,
-				flanker_middle_direction: 'left',
-				flanker_type: 'congruent',
-				flanker_location: loc,
-				cue: c, 
-				trial_id: 'stim'
-			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img></div></div>',
-			data: {
-				correct_response: 37,
-				flanker_middle_direction: 'left',
-				flanker_type: 'incongruent',
-				flanker_location: loc,
-				cue: c, 
-				trial_id: 'stim'
-			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img></div></div>',
-			data: {
-				correct_response: 39,
-				flanker_middle_direction: 'right',
-				flanker_type: 'neutral',
-				flanker_location: loc,
-				cue: c, 
-				trial_id: 'stim'
-			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img></div></div>',
-			data: {
-				correct_response: 39,
-				flanker_middle_direction: 'right',
-				flanker_type: 'congruent',
-				flanker_location: loc,
-				cue: c, 
-				trial_id: 'stim'
-			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img></div></div>',
-			data: {
-				correct_response: 39,
-				flanker_middle_direction: 'right',
-				flanker_type: 'incongruent',
-				flanker_location: loc,
-				cue: c, 
-				trial_id: 'stim'
-			}
-		}]
-		for (i = 0; i < stims.length; i++) {
-			test_stimuli.push(stims[i])
 		}
 	}
 }
-
 /* set up 24 practice trials. Include all nocue up trials, center cue up trials, double cue down trials, and 6 spatial trials (3 up, 3 down) */
 var practice_block = jsPsych.randomization.repeat(test_stimuli.slice(0, 12).concat(test_stimuli.slice(
 	18, 21)).concat(test_stimuli.slice(36, 45)), 1, true);
@@ -393,11 +402,28 @@ function play_sound(sound) {
 	source.connect(audio_context.destination);
 	startTime = audio_context.currentTime;
 	source.start(startTime);
+
     return true;
 }
-var auditory_cue = {
+var tone = {
+	// FIXME: record whether this was a tone/notone trial
 	type: 'call-function',
-	func: function(){ play_sound(sounds[0]) } 
+	func: function(){ play_sound(sounds[0]) },
+	on_finish: function() {
+		jsPsych.data.addDataToLastTrial({
+			auditory_cue: 'tone'
+		})
+	}
+}
+var notone = {
+	// FIXME: record whether this was a tone/notone trial
+	type: 'call-function',
+	func: function() { return },
+	on_finish: function() {
+		jsPsych.data.addDataToLastTrial({
+			auditory_cue: 'notone'
+		})
+	}
 }
 
 /* set up ANTI experiment */
@@ -424,7 +450,12 @@ for (i = 0; i < block.data.length; i++) {
 		timing_response: first_fixation_gap
 	}
 	attention_network_task_interactions_experiment.push(first_fixation);
-	attention_network_task_interactions_experiment.push(auditory_cue);
+	// FIXME: must have same number of blocks else OBOE!!!
+	if (block.data[i].tone == 'tone') {
+		attention_network_task_interactions_experiment.push(tone);
+	} else if (block.data[i].tone == 'notone') {
+		attention_network_task_interactions_experiment.push(notone);
+	}
 
 	if (block.data[i].cue == 'nocue') {
 		attention_network_task_interactions_experiment.push(no_cue)
@@ -520,6 +551,11 @@ for (b = 0; b < blocks.length; b++) {
 			timing_response: first_fixation_gap
 		}
 		attention_network_task_interactions_experiment.push(first_fixation)
+		if (block.data[i].tone == 'tone') {
+			attention_network_task_interactions_experiment.push(tone);
+		} else if (block.data[i].tone == 'notone') {
+			attention_network_task_interactions_experiment.push(notone);
+		}
 
 
 		if (block.data[i].cue == 'nocue') {
