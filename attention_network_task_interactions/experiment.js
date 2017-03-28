@@ -71,14 +71,9 @@ var getInstructFeedback = function() {
 var post_trial_gap = function() {
 	var curr_trial = jsPsych.progress().current_trial_global
 	// FIXME: hard-coded array indicies are fragile.  This will break (again!) if you introduce additional trials.
+	// Check you're doing this calculation for the correct trial
 	return 3500 - jsPsych.data.getData()[curr_trial - 1].block_duration - jsPsych.data.getData()[curr_trial - 5].block_duration
 }
-
-var getInstructFeedback = function() {
-	return '<div class = centerbox><p class = center-block-text>' + feedback_instruct_text +
-		'</p></div>'
-}
-
 
 
 /* ************************************ */
@@ -92,40 +87,28 @@ var instructTimeThresh = 0 ///in seconds
 var credit_var = true
 
 // task specific variables
-/* set up stim: tone (2) * location (2) * cue (4) * direction (2) * condition (3) */
+/* set up stim: alerting (2) * cue (3) * condition (2) */
 var locations = ['up', 'down']
-var tones = ['notone', 'tone']
-var cues = ['nocue', 'center', 'double', 'spatial']
+var alert = ['notone', 'tone']
+var cues = ['nocue', 'cued', 'uncued']
 var current_trial = 0
 var exp_stage = 'practice'
 var test_stimuli = []
 var choices = [37, 39]
 var path = '/static/experiments/attention_network_task_interactions/images/'
-var images = [path + 'right_arrow.png', path + 'left_arrow.png', path + 'no_arrow.png']
+var images = [path + 'right_arrow.png', path + 'left_arrow.png']
 var sounds = ['/static/experiments/attention_network_task_interactions/sounds/2khz_50ms.mp3']
 //preload
 jsPsych.pluginAPI.preloadImages(images)
 jsPsych.pluginAPI.preloadAudioFiles(sounds)
 
-for (t = 0; t < tones.length; t++) {
-	var tone = tones[t]
+for (a = 0; a < alert.length; a++) {
+	var tone = alert[a]
 	for (l = 0; l < locations.length; l++) {
 		var loc = locations[l]
 		for (ci = 0; ci < cues.length; ci++) {
 			var c = cues[ci]
-			stims = [{
-				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-					'><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img></div></div>',
-				data: {
-					correct_response: 37,
-					flanker_middle_direction: 'left',
-					flanker_type: 'neutral',
-					flanker_location: loc,
-					cue: c,
-					tone: tone,
-					trial_id: 'stim'
-				}
-			}, {
+			stims = [ {
 				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
 					'><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img></div></div>',
 				data: {
@@ -134,7 +117,7 @@ for (t = 0; t < tones.length; t++) {
 					flanker_type: 'congruent',
 					flanker_location: loc,
 					cue: c,
-					tone: tone,
+					alert: tone,
 					trial_id: 'stim'
 				}
 			}, {
@@ -146,19 +129,7 @@ for (t = 0; t < tones.length; t++) {
 					flanker_type: 'incongruent',
 					flanker_location: loc,
 					cue: c,
-					tone: tone, 
-					trial_id: 'stim'
-				}
-			}, {
-				stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-					'><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img></div></div>',
-				data: {
-					correct_response: 39,
-					flanker_middle_direction: 'right',
-					flanker_type: 'neutral',
-					flanker_location: loc,
-					cue: c,
-					tone: tone,
+					alert: tone, 
 					trial_id: 'stim'
 				}
 			}, {
@@ -170,7 +141,7 @@ for (t = 0; t < tones.length; t++) {
 					flanker_type: 'congruent',
 					flanker_location: loc,
 					cue: c,
-					tone: tone,
+					alert: tone,
 					trial_id: 'stim'
 				}
 			}, {
@@ -182,7 +153,7 @@ for (t = 0; t < tones.length; t++) {
 					flanker_type: 'incongruent',
 					flanker_location: loc,
 					cue: c,
-					tone: tone,
+					alert: tone,
 					trial_id: 'stim'
 				}
 			}]
@@ -192,7 +163,7 @@ for (t = 0; t < tones.length; t++) {
 		}
 	}
 }
-/* set up 24 practice trials. Include all nocue up trials, center cue up trials, double cue down trials, and 6 spatial trials (3 up, 3 down) */
+/* FIXME: set up practice trials. Include all nocue up trials, center cue up trials, double cue down trials, and 6 spatial trials (3 up, 3 down) */
 var practice_block = jsPsych.randomization.repeat(test_stimuli.slice(0, 12).concat(test_stimuli.slice(
 	18, 21)).concat(test_stimuli.slice(36, 45)), 1, true);
 
@@ -356,43 +327,6 @@ var no_cue = {
 	}
 }
 
-var center_cue = {
-	type: 'poldrack-single-stim',
-	stimulus: '<div class = centerbox><div class = ANT_centercue_text>*</div></div>',
-	is_html: true,
-	choices: 'none',
-	data: {
-		trial_id: 'centercue'
-	},
-	timing_post_trial: 0,
-	timing_stim: 100,
-	timing_response: 100,
-	on_finish: function() {
-		jsPsych.data.addDataToLastTrial({
-			exp_stage: exp_stage
-		})
-	}
-
-}
-
-var double_cue = {
-	type: 'poldrack-single-stim',
-	stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_down><div class = ANT_text>*</div></div><div class = ANT_up><div class = ANT_text>*</div><div></div>',
-	is_html: true,
-	choices: 'none',
-	data: {
-		trial_id: 'doublecue'
-	},
-	timing_post_trial: 0,
-	timing_stim: 100,
-	timing_response: 100,
-	on_finish: function() {
-		jsPsych.data.addDataToLastTrial({
-			exp_stage: exp_stage
-		})
-	}
-}
-
 var audio_context = new AudioContext();
 function play_sound(sound) {
 	console.log('auditory_cue');
@@ -406,24 +340,12 @@ function play_sound(sound) {
     return true;
 }
 var tone = {
-	// FIXME: record whether this was a tone/notone trial
 	type: 'call-function',
-	func: function(){ play_sound(sounds[0]) },
-	on_finish: function() {
-		jsPsych.data.addDataToLastTrial({
-			auditory_cue: 'tone'
-		})
-	}
+	func: function(){ play_sound(sounds[0]) }
 }
 var notone = {
-	// FIXME: record whether this was a tone/notone trial
 	type: 'call-function',
-	func: function() { return },
-	on_finish: function() {
-		jsPsych.data.addDataToLastTrial({
-			auditory_cue: 'notone'
-		})
-	}
+	func: function() { return }
 }
 
 /* set up ANTI experiment */
@@ -450,7 +372,7 @@ for (i = 0; i < block.data.length; i++) {
 		timing_response: first_fixation_gap
 	}
 	attention_network_task_interactions_experiment.push(first_fixation);
-	// FIXME: must have same number of blocks else OBOE!!!
+	// FIXME: must have same number of blocks else OBOE in post_trial_gap()
 	if (block.data[i].tone == 'tone') {
 		attention_network_task_interactions_experiment.push(tone);
 	} else if (block.data[i].tone == 'notone') {
@@ -459,19 +381,22 @@ for (i = 0; i < block.data.length; i++) {
 
 	if (block.data[i].cue == 'nocue') {
 		attention_network_task_interactions_experiment.push(no_cue)
-	} else if (block.data[i].cue == 'center') {
-		attention_network_task_interactions_experiment.push(center_cue)
-	} else if (block.data[i].cue == 'double') {
-		attention_network_task_interactions_experiment.push(double_cue)
 	} else {
+		var cue;
+		if (block.data[i].cue == 'cued') {
+			cue = block.data[i].flanker_location // same location as stimulus
+		}
+		else if (block.data[i].cue == 'uncued') {
+			cue = // opposite location to stimulus
+		}
 		var spatial_cue = {
 			type: 'poldrack-single-stim',
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = centerbox><div class = ANT_' + block.data[i].flanker_location +
+			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = centerbox><div class = ANT_' + cue +
 				'><div class = ANT_text>*</p></div></div>',
 			is_html: true,
 			choices: 'none',
 			data: {
-				trial_id: 'spatialcue',
+				trial_id: block.data[i].cue,
 				exp_stage: 'practice'
 			},
 			timing_post_trial: 0,
@@ -524,11 +449,8 @@ for (i = 0; i < block.data.length; i++) {
 	}
 	attention_network_task_interactions_experiment.push(last_fixation)
 }
-	setTimeout(function(){debugger;}, 3000);
-
 attention_network_task_interactions_experiment.push(rest_block);
 attention_network_task_interactions_experiment.push(test_intro_block);
-
 
 /* Set up ANTI main task */
 var trial_num = 0
@@ -556,7 +478,6 @@ for (b = 0; b < blocks.length; b++) {
 		} else if (block.data[i].tone == 'notone') {
 			attention_network_task_interactions_experiment.push(notone);
 		}
-
 
 		if (block.data[i].cue == 'nocue') {
 			attention_network_task_interactions_experiment.push(no_cue)
