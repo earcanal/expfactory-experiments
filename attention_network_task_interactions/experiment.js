@@ -168,6 +168,7 @@ var practice_block = jsPsych.randomization.repeat(test_stimuli.slice(0, 12).conc
 	18, 21)).concat(test_stimuli.slice(36, 45)), 1, true);
 
 /* set up repeats for three test blocks */
+// FIXME: Document $.extend(...) pattern (see https://api.jquery.com/jquery.extend/)
 var block1_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli), 1, true);
 var block2_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli), 1, true);
 var block3_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli), 1, true);
@@ -384,7 +385,7 @@ for (i = 0; i < block.data.length; i++) {
 	} else {
 		var cue;
 		if (block.data[i].cue == 'cued') {
-			cue = block.data[i].flanker_location // same location as stimulus
+			cue = block.data[i].flanker_location; // same location as stimulus
 		}
 		else if (block.data[i].cue == 'uncued') {
 			cue = // opposite location to stimulus
