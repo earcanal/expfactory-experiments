@@ -20,8 +20,10 @@ var sumInstructTime = 0 //ms
 var instructTimeThresh = 0 ///in seconds
 
 // task specific variables
-var writing_start = 0
-var timelimit = 5
+var total_pages = 2
+var pages = [];
+var page = 1
+var timelimit = 1
 var elapsed = 0
 
 /* ************************************ */
@@ -71,9 +73,9 @@ var instructions_block = {
     trial_id: "instruction"
   },
   pages: [
-    '<div class = centerbox><p class = block-text>In this task we want you to write. On the next page write for ' +
-    timelimit +
-    ' minutes in response to the prompt "What happened in the last month?".</p><p class = block-text> It is important that you write for the entire time and stay on task. After you end the instructions you will start. The experiment will automatically end after ' + timelimit + ' minutes.</p></div>'
+    "<div class = centerbox><p class = block-text>After reading these instructions we want you to spend " + timelimit + 
+    " minutes, reading some pages from Tolstoy's novel War and Peace.</p><p class = block-text> The experiment will automatically ask questions about what you have read after " + timelimit + ' minutes.' +
+    ' Use the <strong>Next</strong> and <strong>Previous</strong> buttons if you need to re-read anything.</p></div>'
   ],
   allow_keys: false,
   show_clickable_nav: true,
@@ -101,23 +103,33 @@ var instruction_node = {
     }
   }
 }
-/* define test block */
-var write_block = {
-  type: 'writing',
+
+// read all of the pages
+for (i=1; i <= total_pages; i++) {
+  $.ajax({
+      url : '/static/experiments/zoning_out_task/text/' + i + '.html',
+      success : function(result) {
+          pages.push(result);
+      }
+  });
+}
+
+var text_pages = {
+  type: 'instructions',
   data: {
-    trial_id: "write",
-    exp_stage: 'test'
+    trial_id: "text_pages"
   },
-  text_class: 'writing_class',
-  is_html: true,
-  initial_text: 'Write here for ' + timelimit + ' minutes.',
-  timing_post_trial: 0,
-  timing_response: timelimit * 60000
+  pages: pages,
+  allow_keys: false,
+  show_clickable_nav: true,
+  timing_response: timelimit * 60000,
+  timing_post_trial: 1000
 };
 
-/** HACKING **/
-// sample function that might be used to check if a subject has given
-// consent to participate.
+// FYI: dynamic timelines (https://groups.google.com/forum/#!topic/jspsych/iyc5WQoMbQs)
+
+// consent page
+// SEE ALSO: poldrack_plugins/jspsych-consent.js
 var check_consent = function(elem) {
   if ($('#consent_checkbox').is(':checked')) {
     return true;
@@ -128,22 +140,18 @@ var check_consent = function(elem) {
   }
   return false;
 };
-
-
-// declare the block.
 var consent = {
   type:'html',
   url: "/static/experiments/zoning_out_task/text/consent.html",
   cont_btn: "start",
   check_fn: check_consent
 };
-/** HACKING **/
+
 
 /* create experiment definition array */
 /* name MUST be of the form {{exp_id}}_experiment  */
 var zoning_out_task_experiment = [];
-zoning_out_task_experiment.push(consent);
 zoning_out_task_experiment.push(instruction_node);
-zoning_out_task_experiment.push(write_block);
-zoning_out_task_experiment.push(post_task_block)
+zoning_out_task_experiment.push(text_pages);
+//zoning_out_task_experiment.push(post_task_block)
 zoning_out_task_experiment.push(end_block);
