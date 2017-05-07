@@ -131,9 +131,9 @@ var check_consent = function(elem) {
 
 
 // declare the block.
-var trial = {
+var consent = {
   type:'html',
-  url: "external_page.html",
+  url: "/static/experiments/zoning_out_task/text/consent.html",
   cont_btn: "start",
   check_fn: check_consent
 };
@@ -142,6 +142,7 @@ var trial = {
 /* create experiment definition array */
 /* name MUST be of the form {{exp_id}}_experiment  */
 var zoning_out_task_experiment = [];
+zoning_out_task_experiment.push(consent);
 zoning_out_task_experiment.push(instruction_node);
 zoning_out_task_experiment.push(write_block);
 zoning_out_task_experiment.push(post_task_block)
