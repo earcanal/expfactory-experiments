@@ -74,7 +74,7 @@ var instructions_block = {
   },
   pages: [
     "<div class = centerbox><p class = block-text>After reading these instructions we want you to spend " + timelimit + 
-    " minutes, reading some pages from Tolstoy's novel War and Peace.</p><p class = block-text> The experiment will automatically ask questions about what you have read after " + timelimit + ' minutes.' +
+    " minutes, reading some pages from Tolstoy's novel <em>War and Peace</em>.</p><p class = block-text> The experiment will automatically ask questions about what you have read after " + timelimit + ' minutes.' +
     ' Use the <strong>Next</strong> and <strong>Previous</strong> buttons if you need to re-read anything.</p></div>'
   ],
   allow_keys: false,
@@ -115,12 +115,12 @@ for (i=1; i <= total_pages; i++) {
 }
 
 var text_pages = {
-  type: 'instructions',
+  type: 'reading',
   data: {
     trial_id: "text_pages"
   },
   pages: pages,
-  allow_keys: false,
+  allow_keys: true,
   show_clickable_nav: true,
   timing_response: timelimit * 60000,
   timing_post_trial: 1000
