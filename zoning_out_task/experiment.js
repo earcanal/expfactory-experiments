@@ -5,13 +5,6 @@ var getInstructFeedback = function() {
   return '<div class = centerbox><p class = center-block-text>' + feedback_instruct_text + '</p></div>'
 }
 
-var getResponseTime = function() {
-  if (writing_start === 0 ) {
-    writing_start = new Date()
-  }
-  var timeLeft = (timelimit-elapsed)*60000
-  return timeLeft
-}
 /* ************************************ */
 /* Define experimental variables */
 /* ************************************ */
@@ -20,11 +13,10 @@ var sumInstructTime = 0 //ms
 var instructTimeThresh = 0 ///in seconds
 
 // task specific variables
-var total_pages = 2
-var pages = [];
-var page = 1
+var last_page = 1
+var pages = []
+var furthest_page = 0
 var timelimit = 1
-var elapsed = 0
 
 /* ************************************ */
 /* Set up jsPsych blocks */
@@ -75,7 +67,7 @@ var instructions_block = {
   pages: [
     "<div class = centerbox><p class = block-text>After reading these instructions we want you to spend " + timelimit + 
     " minutes, reading some pages from Tolstoy's novel <em>War and Peace</em>.</p><p class = block-text> The experiment will automatically ask questions about what you have read after " + timelimit + ' minutes.' +
-    ' Use the <strong>Next</strong> and <strong>Previous</strong> buttons if you need to re-read anything.</p></div>'
+    ' Use the <strong>Previous</strong> and <strong>Next</strong> buttons if you need to re-read anything.</p></div>'
   ],
   allow_keys: false,
   show_clickable_nav: true,
@@ -105,7 +97,7 @@ var instruction_node = {
 }
 
 // read all of the pages
-for (i=1; i <= total_pages; i++) {
+for (i=0; i <= last_page; i++) {
   $.ajax({
       url : '/static/experiments/zoning_out_task/text/' + i + '.html',
       success : function(result) {
@@ -123,7 +115,10 @@ var text_pages = {
   allow_keys: true,
   show_clickable_nav: true,
   timing_response: timelimit * 60000,
-  timing_post_trial: 1000
+  timing_post_trial: 500,
+  on_finish: function(data) {
+    furthest_page = data.furthest_page;
+  }
 };
 
 // FYI: dynamic timelines (https://groups.google.com/forum/#!topic/jspsych/iyc5WQoMbQs)
