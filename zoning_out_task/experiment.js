@@ -126,15 +126,14 @@ var text_pages = {
 // set.seed(001)
 // sample(1:10 >= 5)
 // [1] FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
-var factors = {
-  questions: []
+var questions = ['Anna Pa&#769;vlovna said she had been suffering from headaches.','These questions support HTML entities']
+var options   = []
+var required  = []
+for (i = 0; i < questions.length; i++) {
+  options.push(['true','false']);
+  required.push(true);
 }
-
-// FIXME: Questions 5 true, 5 false
-var questions = []
-
 // FIXME: choose number of questions based on last_page - 1
-
 
 var questions = {
   type: 'survey-multi-choice',
@@ -142,8 +141,8 @@ var questions = {
     trial_id: 'questions'
   },
   questions: questions,
-  options: [ ['yes','no'] ],
-  required: [true]
+  options: options,
+  required: required
 }
 
 // FYI: dynamic timelines (https://groups.google.com/forum/#!topic/jspsych/iyc5WQoMbQs)
