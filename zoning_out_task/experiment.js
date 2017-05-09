@@ -13,10 +13,10 @@ var sumInstructTime = 0 //ms
 var instructTimeThresh = 0 ///in seconds
 
 // task specific variables
-var last_page = 1
+var last_page = 16
 var pages = []
 var furthest_page = 0
-var timelimit = 1
+var timelimit = 15
 
 /* ************************************ */
 /* Set up jsPsych blocks */
@@ -71,7 +71,7 @@ var instructions_block = {
   ],
   allow_keys: false,
   show_clickable_nav: true,
-  timing_post_trial: 1000
+  timing_post_trial: 500
 };
 
 var instruction_node = {
@@ -100,6 +100,7 @@ var instruction_node = {
 for (i=0; i <= last_page; i++) {
   $.ajax({
       url : '/static/experiments/zoning_out_task/text/' + i + '.html',
+      cache: false,
       success : function(result) {
           pages.push(result);
       }
