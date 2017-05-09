@@ -8,6 +8,7 @@
                 "static/js/jspsych/jspsych.js",
                 "static/js/jspsych/plugins/jspsych-text.js",
                 "static/js/jspsych/plugins/jspsych-html.js",
+                "static/js/jspsych/plugins/jspsych-survey-multi-choice.js",
                 "static/js/jspsych/poldrack_plugins/jspsych-reading.js",
                 "static/js/jspsych/poldrack_plugins/jspsych-poldrack-text.js",
                 "static/js/jspsych/poldrack_plugins/jspsych-poldrack-instructions.js",

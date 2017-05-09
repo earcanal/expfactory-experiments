@@ -110,7 +110,7 @@ for (i=0; i <= last_page; i++) {
 var text_pages = {
   type: 'reading',
   data: {
-    trial_id: "text_pages"
+    trial_id: 'text_pages'
   },
   pages: pages,
   allow_keys: true,
@@ -121,6 +121,16 @@ var text_pages = {
     furthest_page = data.furthest_page;
   }
 };
+
+var questions = {
+  type: 'survey-multi-choice',
+  data: {
+    trial_id: 'questions'
+  },
+  questions: ['Do I want more life, FUCKER?'],
+  options: [ ['yes','no'] ],
+  required: [true]
+}
 
 // FYI: dynamic timelines (https://groups.google.com/forum/#!topic/jspsych/iyc5WQoMbQs)
 
@@ -149,5 +159,6 @@ var consent = {
 var zoning_out_task_experiment = [];
 zoning_out_task_experiment.push(instruction_node);
 zoning_out_task_experiment.push(text_pages);
-//zoning_out_task_experiment.push(post_task_block)
+zoning_out_task_experiment.push(questions);
+//zoning_out_task_experiment.push(post_task_block);
 zoning_out_task_experiment.push(end_block);
