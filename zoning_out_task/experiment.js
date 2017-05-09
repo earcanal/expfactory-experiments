@@ -122,12 +122,26 @@ var text_pages = {
   }
 };
 
+// Same pseudorandom order for all participants set using following R code
+// set.seed(001)
+// sample(1:10)
+// [1]  3  2  6 10  5  7  8  4  1  9
+var factors = {
+  questions: [3, 2, 6, 10, 5, 7, 8, 4, 1, 9]
+}
+
+// FIXME: Questions 5 true, 5 false
+var questions = []
+
+// FIXME: choose number of questions based on last_page - 1
+
+
 var questions = {
   type: 'survey-multi-choice',
   data: {
     trial_id: 'questions'
   },
-  questions: ['Do I want more life, FUCKER?'],
+  questions: questions,
   options: [ ['yes','no'] ],
   required: [true]
 }
