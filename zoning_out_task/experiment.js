@@ -124,10 +124,10 @@ var text_pages = {
 
 // Same pseudorandom order for all participants set using following R code
 // set.seed(001)
-// sample(1:10)
-// [1]  3  2  6 10  5  7  8  4  1  9
+// sample(1:10 >= 5)
+// [1] FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
 var factors = {
-  questions: [3, 2, 6, 10, 5, 7, 8, 4, 1, 9]
+  questions: []
 }
 
 // FIXME: Questions 5 true, 5 false
