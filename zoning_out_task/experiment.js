@@ -98,9 +98,11 @@ var instruction_node = {
 
 // read all of the pages
 for (i=0; i <= last_page; i++) {
+  # FIXME: http://stackoverflow.com/questions/29315005/synchronous-xmlhttprequest-deprecated/43915786#43915786
   $.ajax({
       url : '/static/experiments/zoning_out_task/text/' + i + '.html',
       cache: false,
+      async: false,
       success : function(result) {
           pages.push(result);
       }
@@ -126,7 +128,10 @@ var text_pages = {
 // set.seed(001)
 // sample(1:10 >= 5)
 // [1] FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
-var questions = ['Anna Pa&#769;vlovna said she had been suffering from headaches.','These questions support HTML entities']
+var questions = ['Anna Pa&#769;vlovna said she had been suffering from headaches.','According to Anna Pa&#769;vlovna, England has refused to evacuate Malta.',
+  'Princess Mary Bolkonskaya is a relation of Anna Pa&#769;vlovna.','Princess Mary Bolkonskaya is known as the most fascinating woman in Petersburg','Pierre is stout and heavily built.',
+  'The Duc d&apos;Enghien was murdered.','Princess He&#769;le&#768;ne wore a white dress trimmed with moss and ivy.','Pierre is French.','Prince Andrew Bolko&#769;nski is going to war.',
+  ['Prince Vasi&#769;ali can easily make requests of the Emporer.' ]]
 var options   = []
 var required  = []
 for (i = 0; i < questions.length; i++) {
