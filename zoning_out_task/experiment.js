@@ -120,7 +120,13 @@ var pages_block = {
   timing_response: timelimit * 60000,
   timing_post_trial: 500,
   on_finish: function(data) {
+    // select answerable questions based on what's been read
     furthest_page = data.furthest_page;
+    for (var key in questions) {
+      if (furthest_page > key) {
+        q.push(questions[key])
+      }
+    }
   }
 };
 
@@ -128,26 +134,31 @@ var pages_block = {
 // set.seed(001)
 // sample(1:10 >= 5)
 // [1] FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
-var questions = ['Anna Pa&#769;vlovna said she had been suffering from headaches.','According to Anna Pa&#769;vlovna, England has refused to evacuate Malta.',
-  'Princess Mary Bolkonskaya is a relation of Anna Pa&#769;vlovna.','Princess Mary Bolkonskaya is known as the most fascinating woman in Petersburg','Pierre is stout and heavily built.',
-  'The Duc d&apos;Enghien was murdered.','Princess He&#769;le&#768;ne wore a white dress trimmed with moss and ivy.','Pierre is French.','Prince Andrew Bolko&#769;nski is going to war.',
-  'Prince Vasi&#769;ali can easily make requests of the Emporer.']
-var options   = []
-var required  = []
-for (i = 0; i < questions.length; i++) {
-  options.push(['true','false']);
-  required.push(true);
+//
+// Keys are page numbers which contain the answer to associated question
+var questions = {
+  0: 'Anna Pa&#769;vlovna said she had been suffering from headaches.',
+  2: 'According to Anna Pa&#769;vlovna, England has refused to evacuate Malta.',
+  4: 'Princess Mary Bolkonskaya is a relation of Anna Pa&#769;vlovna.',
+  5: 'Princess Mary Bolkonskaya is known as the most fascinating woman in Petersburg',
+  7: 'Pierre is stout and heavily built.',
+  9: 'The Duc d&apos;Enghien was murdered.',
+  10: 'Princess He&#769;le&#768;ne wore a white dress trimmed with moss and ivy.',
+  12: 'Pierre is French.',
+  13: 'Prince Andrew Bolko&#769;nski is going to war.',
+  15: 'Prince Vasi&#769;ali can easily make requests of the Emporer.'
 }
-// FIXME: choose number of questions based on last_page - 1
+var q = [];
 
+// Questions block has to be configured dynamically, _after_ we know how many pages were read
 var questions_block = {
   type: 'survey-multi-choice',
   data: {
     trial_id: 'questions'
   },
-  questions: questions,
-  options: options,
-  required: required
+  questions: function() { return q },
+  options:   function() { var o = []; for (i = 0; i < q.length; i++) { o.push(['true','false']) } return o },
+  required:  function() { var r = []; for (i = 0; i < q.length; i++) { r.push(true) }; return r }
 }
 
 // FYI: dynamic timelines (https://groups.google.com/forum/#!topic/jspsych/iyc5WQoMbQs)
