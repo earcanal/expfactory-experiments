@@ -66,8 +66,8 @@ var instructions_block = {
   },
   pages: [
     "<div class = centerbox><p class = block-text>After reading these instructions we want you to spend " + timelimit + 
-    " minutes, reading some pages from Tolstoy's novel <em>War and Peace</em>.</p><p class = block-text> The experiment will automatically ask questions about what you have read after " + timelimit + ' minutes.' +
-    ' Use the <strong>Previous</strong> and <strong>Next</strong> buttons if you need to re-read anything.</p></div>'
+    " minutes, reading some pages from Tolstoy's novel <em>War and Peace</em>.</p><p class = block-text> Read at your normal pace, using the <strong>Previous</strong> and <strong>Next</strong> buttons " +
+    "if you need to re-read anything. The experiment will automatically ask questions about what you have read after " + timelimit + ' minutes.' + ' </p></div>'
   ],
   allow_keys: false,
   show_clickable_nav: true,
@@ -98,7 +98,7 @@ var instruction_node = {
 
 // read all of the pages
 for (i=0; i <= last_page; i++) {
-  # FIXME: http://stackoverflow.com/questions/29315005/synchronous-xmlhttprequest-deprecated/43915786#43915786
+  // FIXME: http://stackoverflow.com/questions/29315005/synchronous-xmlhttprequest-deprecated/43915786#43915786
   $.ajax({
       url : '/static/experiments/zoning_out_task/text/' + i + '.html',
       cache: false,
@@ -109,7 +109,7 @@ for (i=0; i <= last_page; i++) {
   });
 }
 
-var text_pages = {
+var pages_block = {
   type: 'reading',
   data: {
     trial_id: 'text_pages'
@@ -131,7 +131,7 @@ var text_pages = {
 var questions = ['Anna Pa&#769;vlovna said she had been suffering from headaches.','According to Anna Pa&#769;vlovna, England has refused to evacuate Malta.',
   'Princess Mary Bolkonskaya is a relation of Anna Pa&#769;vlovna.','Princess Mary Bolkonskaya is known as the most fascinating woman in Petersburg','Pierre is stout and heavily built.',
   'The Duc d&apos;Enghien was murdered.','Princess He&#769;le&#768;ne wore a white dress trimmed with moss and ivy.','Pierre is French.','Prince Andrew Bolko&#769;nski is going to war.',
-  ['Prince Vasi&#769;ali can easily make requests of the Emporer.' ]]
+  'Prince Vasi&#769;ali can easily make requests of the Emporer.']
 var options   = []
 var required  = []
 for (i = 0; i < questions.length; i++) {
@@ -140,7 +140,7 @@ for (i = 0; i < questions.length; i++) {
 }
 // FIXME: choose number of questions based on last_page - 1
 
-var questions = {
+var questions_block = {
   type: 'survey-multi-choice',
   data: {
     trial_id: 'questions'
@@ -176,7 +176,7 @@ var consent = {
 /* name MUST be of the form {{exp_id}}_experiment  */
 var zoning_out_task_experiment = [];
 zoning_out_task_experiment.push(instruction_node);
-zoning_out_task_experiment.push(text_pages);
-zoning_out_task_experiment.push(questions);
+zoning_out_task_experiment.push(pages_block);
+zoning_out_task_experiment.push(questions_block);
 //zoning_out_task_experiment.push(post_task_block);
 zoning_out_task_experiment.push(end_block);
