@@ -570,5 +570,5 @@ for (b = 0; b < blocks.length; b++) {
 	attention_network_task_2_experiment.push(attention_node)
 	attention_network_task_2_experiment.push(rest_block)
 }
-attention_network_task_2_experiment.push(post_task_block)
+//attention_network_task_2_experiment.push(post_task_block)
 attention_network_task_2_experiment.push(end_block)

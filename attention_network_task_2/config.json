@@ -41,7 +41,7 @@
         "deployment_variables":{"jspsych_init":
                                         {"fullscreen": true,
                                         "display_element": "getDisplayElement",
-                                        "on_trial_finish": "addID('attention_network_task')"}
+                                        "on_trial_finish": "addID('attention_network_task_2')"}
                        }
    }
 ]
